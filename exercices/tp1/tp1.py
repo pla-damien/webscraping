@@ -3,43 +3,50 @@ from requests.exceptions import RequestException, Timeout, ConnectionError
 import os
 import pandas as pd 
 import time
+from src.utils.logger import setup_logger
 
 BASE_URL = "http://quotes.toscrape.com"
 BASE_URL_PAGE = "http://quotes.toscrape.com/page/"
+log_file = "/logs/log"
+
 #TP 1 - Scraper basique
 #Objectif : Créer un scraper simple avec Requests
 #Site : http://quotes.toscrape.com
 #Mission 1. Créer une fonction fetch_page(url) avec gestion d'erreurs 
-def fetch_page(url):
-    session = requests.Session()
-
+def fetch_page(url,logger):
     try:
+        logger.info(f"Début de la requète sur {url}")
+        session = requests.Session()
         response = session.get(url)
 
         response.raise_for_status()
+        logger.info(f"Fin de la requète sur {url}")
         return response
-        print(f"Timeout pour {url}")
-        return None
+       
 
     except ConnectionError:
-        print(f"Erreur de connexion pour {url}")
+        logger.error(f"Erreur de connexion pour {url}")
         return None
 
     except requests.exceptions.HTTPError:
         # On peut accéder au code HTTP via response.status_code
-        print(f"Erreur HTTP {response.status_code}: {url}")
+        logger.error(f"Erreur HTTP {response.status_code}: {url}")
         return None
 
     except RequestException as e:
         # Regroupe les autres erreurs possibles (ex: URL invalide)
-        print(f"Erreur générale: {e}")
+        logger.error(f"Erreur générale: {e}")
         return None 
+    
+
+
+logger = setup_logger("ETL_API", "logs/etl_api.log")
 log = []
 # 2. Scraper les 3 premières pages du site 
 for num in range(1,4):
     delay = time.time() 
     url=f"{BASE_URL_PAGE}{num}/"
-    reponse = fetch_page(url)
+    reponse = fetch_page(url,logger)
     delay = time.time() - delay
     # 3. Pour chaque page, extraire le HTML brut
     print(reponse.text)
@@ -47,8 +54,9 @@ for num in range(1,4):
     print("Nombre de caractères :", len(reponse.text))
 
     # 5. Sauvegarder chaque page dans un fichier HTML 
-    filepath=f"page{num}.html"
+    filepath=f"data/output/page{num}.html"
     with open(filepath,"w",encoding='utf-8') as f :
+        logger.info(f"Creation du fichier {filepath}")
         f.write(reponse.text)
 
     log.append({ 
@@ -62,7 +70,7 @@ for num in range(1,4):
 
 # 6. Créer un rapport CSV avec : - URL de la page - Statut HTTP - Taille en octets - Temps de réponse
 df = pd.DataFrame(log)
-df.to_csv("rappor.csv") 
+df.to_csv("logs/rappor.csv") 
 #Contraintes - Utiliser une session - Ajouter un délai de 1 seconde entre requêtes - Gérer les erreurs proprement
 
 #Bonus - Logger les étapes

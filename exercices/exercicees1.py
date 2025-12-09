@@ -24,13 +24,16 @@ print("Encodage : ",response.encoding)
 
 print("Header", response.headers)
 
-rp = RobotFileParser
-rp.set_url = ''
+
+robot_url = "http://quotes.toscrape.com/robots"
+robot_response = requests.get(robot_url)
+
+
 urls = ['http://quotes.toscrape.com/,'
 'http://quotes.toscrape.com/tag/abilities/page/1/',
 'http://quotes.toscrape.com/tag/books/page/1/']
 
-
+session =requests.session()
 for url in urls:
     response = requests.get(url)
     print(f"Scraped: {url} (code HTTP {response.status_code})")
@@ -38,3 +41,5 @@ for url in urls:
     delay = random.uniform(1, 3)
     print(f"Pause de {delay:.2f} secondes...")
     time.sleep(delay)
+
+session.close()
