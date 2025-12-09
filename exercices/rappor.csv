@@ -1,0 +1,4 @@
+,url,Status HTTP,Taille,Temps de réponse
+0,http://quotes.toscrape.com/page/1/,200,11064,0
+1,http://quotes.toscrape.com/page/2/,200,13745,0
+2,http://quotes.toscrape.com/page/3/,200,10029,0
