@@ -1,0 +1,4 @@
+url,status,size_bytes,respond-time_s,success,timestamp
+http://quotes.toscrape.com/,200,11064,0.22011804580688477,True,2025-12-09T14:21:17.718925
+http://quotes.toscrape.com/page/2/,200,13745,0.1935558319091797,True,2025-12-09T14:21:18.915706
+http://quotes.toscrape.com/page/3/,200,10029,0.10057330131530762,True,2025-12-09T14:21:20.019764
