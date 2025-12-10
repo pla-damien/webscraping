@@ -82,12 +82,14 @@ for product in list_product:
  
 # 3. Créer un DataFrame Pandas par note 
 df = pd.DataFrame(books)
-df = df.sort_values("note",ascending=False)
-df = df.reset_index()
+df_note = df.sort_values("note",ascending=False)
+
+df_note = df_note.reset_index(drop=True)
+print(df_note)
 # print(df)
 
 # 5. Sauvegarder dans books.csv 
-df.to_csv("data/output/books.csv")
+df.to_csv("data/output/books.csv",index=False)
 # 4. Calculer : - Prix moyen 
 avg_price = df["price"].mean()
 
