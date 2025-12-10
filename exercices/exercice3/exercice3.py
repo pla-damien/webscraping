@@ -48,6 +48,7 @@ def download_image(image_url, save_path):
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     with open(save_path, "wb") as f:
         f.write(response.content)
+        logger.info(f"Image télécharger avec succès : {image_url}")
 
 # Exercice - Scraping de livres
 # Objectif : Scraper un catalogue de livres
