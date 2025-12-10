@@ -62,10 +62,11 @@ for quote in quotes:
     text = quote.select_one(".text").get_text()
     auteur = quote.select_one(".author").get_text()
     tags = quote.select(".tag")
+
     list_tag=[]
     for tag in tags:
         list_tag.append(tag.get_text())
-
+    print(list_tag)
     print(text,auteur,list_tag)
     list_citation.append({
         "text" : text,
@@ -73,20 +74,22 @@ for quote in quotes:
         "tag" : list_tag
     })
 
+print(list_citation)
+# 8. Bonus : Sauvegarder dans un fichier JSON
+with open("citations.json", "w", encoding="utf-8") as f:
+    json.dump(list_citation, f,indent=2,ensure_ascii=False)
+    logger.info("Fichier Json créé")
+
+
 
 #Exercice - BeautifulSoup basique
 #Objectif : Extraire des données avec BeautifulSoup
 
 #Site : http://quotes.toscrape.com
 
+next = soup.select(".next")
+href = next["href"]
+print(href)
 
-
-#8. Bonus : Sauvegarder dans un fichier JSON
-import json
-
-# 8. Bonus : Sauvegarder dans un fichier JSON
-with open("citations.json", "w", encoding="utf-8") as f:
-    json.dump(list_citation, f)
-    logger.info("Fichier Json créé")
 
 
