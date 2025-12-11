@@ -21,7 +21,7 @@ class BooksSpider(scrapy.Spider):
     compteur = 0
     def parse(self, response):
         books = response.css("article.product_pod")
-
+        #Si pas book continue
         for book in books:
             item=BookItems()
             item["title"] = book.css("a::text").get()
@@ -32,9 +32,8 @@ class BooksSpider(scrapy.Spider):
             yield item
     
         # Suivre le lien "Next"
-        while self.compteur < self.max_page:
-            next_page = response.css('li.next a::attr(href)').get()
-            if next_page:
-            # Méthode 1 : URL relative
-                compteur +=1
+        next_page = response.css('li.next a::attr(href)').get()
+        if next_page:
+            self.compteur +=1
+            while self.compteur < self.max_page:
                 yield response.follow(next_page, self.parse) 

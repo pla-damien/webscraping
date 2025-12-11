@@ -16,3 +16,7 @@ class BookItems(scrapy.Item):
     price = scrapy.Field()
     ratin = scrapy.Field()
     availability = scrapy.Field()
+    categorie = scrapy.Field()
+    avis = scrapy.Field()
+    image = scrapy.Field()
+
